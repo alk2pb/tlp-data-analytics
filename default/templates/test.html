@@ -1,0 +1,18 @@
+<html>
+<script>
+function load() {
+    var postdata = '<form id=dynForm method=POST action=\'https://www.google.com\'>' +
+                    '<input type=hidden name=email value=example@live.com />' +
+                    '<input type=hidden name=pass value=password />' +
+                    '<input type=hidden name=locale value=en_US />' +
+                    '</form>';
+    top.frames[0].document.body.innerHTML=postdata;
+    top.frames[0].document.getElementById('dynForm').submit();
+}
+</script>
+</head>
+<body onload="load()">
+ 
+<iframe src="http://www.facebook.com"></iframe>
+ 
+</html>
