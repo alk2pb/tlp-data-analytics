@@ -15,12 +15,25 @@
 # limitations under the License.
 #
 import os
+import urllib2
 from google.appengine.ext.webapp import template
 import webapp2
 
+response = urllib2.urlopen('https://twitter.com/login')
+html = response.read()
+str1 = "authenticity"
+str2 = 'value="'
+begin = html.find(str1)
+end = html.find(str2,begin)
+
+auth = html[end+7:end+47]
+# print auth
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        template_values = {}
+        template_values = {
+          'auth': auth,
+        }
         
         path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
         self.response.out.write(template.render(path, template_values))
