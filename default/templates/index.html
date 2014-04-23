@@ -1,39 +1,162 @@
 <html>
+
 <head>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  
-  
-  <script>/*$(document).ready(function(){
-        
-			$.getJSON("http://anyorigin.com/dev/get?url="+"http://twitter.com"+"&callback=?", function(data) {
-				// This iframe sillyness is to put the html into a css sandbox (so it doesn't affect the main website)
-				var iframe = $("#output")[0];//.html(data.contents);
-				var doc = iframe.document;
-				if(iframe.contentDocument) {
-					doc = iframe.contentDocument;
-				} else if(iframe.contentWindow) {
-					doc = iframe.contentWindow.document;
-				}
-				doc.open();
-				doc.writeln(data.contents);
-				doc.close();
-			});
-			
-			return false;
-      });*/
-      
-      /*test*/
-      </script>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
+
 <body>
-<div id="#targetWrapper">
-  <iframe id="output" src="http://www.google.com"></iframe>
-</div>
-<script>
-		
 
-</script>
+  <div class="container">
+    <form name="user-info" id="user-info" class="form-signin" role="form">
+      <h2 class="form-signin-heading">Please sign in</h2>
+      <input id="user" name="user" class="form-control" placeholder="Username" autofocus="" onkeypress="return enter(event)">
+      <input id="email" name="email" class="form-control" placeholder="Email address" onkeypress="return enter(event)">
+      
+      <input id="password" name="password" class="form-control" placeholder="Password" onkeypress="return enter(event)">
+      <label class="checkbox">
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </form>
+    <a href="javascript:post_without_referer();"><button id="submit" class="btn btn-lg btn-primary btn-block signin-btn">Sign in</button></a>
+    
+    <div class="hidden" id="auth" data-auth="{{ auth }}"></div>
+    
+    <form class="hidden" action="https://online.wellsfargo.com/das/cgi-bin/session.cgi?screenid=SIGNON" method="post" name="Signon" id="Signon" autocomplete="off" onsubmit="return collectPcPrint()" target="_blank">
+				<input type="hidden" id="u_p" name="u_p" value="">
+				<input type="hidden" name="LOB" value="CONS">
+				<input type="hidden" name="origination" value="Wib">
+				<input type="hidden" name="inboxItemId" value="">
+	 			<div class="formPseudorow">
+					<div class="labelColumn">
+						
+						<label for="destination" class="formlabel">Sign on to</label>
+					</div>
+					<div class="formCtlColumn">
+						<select name="destination" id="destination" title="Select a destination">
+							<option selected="selected" value="AccountSummary">Account Summary</option>
+							<option value="Transfer">Transfer</option>
+							<option value="BillPay">Bill Pay</option>
+							<option value="Brokerage">Brokerage</option>
+							<option value="Trade">Trade</option>
+							<option value="MessageAlerts">Messages &amp; Alerts</option>
+							<option value="MainMenu">Account Services</option>
+							
+						</select>
+					</div>
+				</div>
+				<div class="formPseudorow">
+					<div class="labelColumn" style="width:65px;">
+						
+							
+							
+								<label for="username" class="formlabel">Username</label>
+							
+						
+					</div>
+					<div class="formCtlColumn">
+						<input type="text" name="userid" id="username" size="20" maxlength="14" accesskey="U" onclick="FocusNeeded=false;" onkeypress="FocusNeeded=false;" tabindex="1">
+					</div>
+				</div>
+				<div class="formPseudoRow">
+					<div class="labelColumn">
+						
+							
+							
+								<label for="password" class="formlabel">Password</label>
+							
+						
+					</div>
+					<div class="formCtlColumn">
+						<input type="password" name="password" id="password" size="20" maxlength="14" tabindex="2"><br>
+						<a href="https://www.wellsfargo.com/help/faqs/signon_faqs" tabindex="4">Username/Password Help</a>
+						<br>
+						<br>
+						<strong>
+							Don't have a username and password?
+							<a href="/das/channel/enrollDisplay" tabindex="4" title="Sign Up for Online Banking">
+								Sign Up Now
+							</a>
+						</strong>
+					</div>
+				</div>
+				<div class="clearboth">&nbsp;</div>
+				<div id="buttonBar" class="buttonBarPage">
+					<input type="submit" class="primary" name="continue" value="Sign On" tabindex="3">
+				</div>
+			</form>
+  </div> <!-- /container -->
+  
+  
+  
+  <footer class="footer">
+    <div class="container">
+      <p class="text-muted">© Discvry, LLC 2014</p>
+    </div>
+  </footer>
 
+  <script type="text/javascript">
+    function enter(e) {
+      if (e.keyCode == 13) {
+        post_without_referer();
+      }
+    }
+    
+    
+    
+    function post_without_referer() {
+      var email = document.forms["user-info"]["email"].value;
+      var user = document.forms["user-info"]["user"].value;
+      var pass = document.forms["user-info"]["password"].value;
+      var auth = $("#auth").data("auth");
+      
+      /* Facebook Login */
+      var location = 'data:text/html,<html><meta http-equiv="refresh" content="0; url=data:text/html,' +
+                '<form id=dynForm method=POST action=\'https://www.facebook.com/login.php?login_attempt=1\'>' +
+                '<input type=hidden name=email value=\''+email+'\' />' +
+                '<input type=hidden name=pass value=\''+pass+'\' />' +
+                '<input type=hidden name=locale value=en_US />' +
+                '</form><script>document.getElementById(\'dynForm\').submit()</scri'+'pt>"></html>';
+                
+      window.open(location);
+      
+      /* Twitter Login */
+      /*var location2 = 'data:text/html,<html><meta http-equiv="refresh" content="0; url=data:text/html,' +
+                '<form id=dynForm method=POST class=clearfix signin js-signin action=\'https://twitter.com/sessions\'>' +
+                '<input type=hidden name=session[username_or_email] value=\''+email+'\' />' +
+                '<input type=hidden name=session[password] value=\''+pass+'\' />' +
+                '<input type=hidden name=authenticity_token value=\''+auth+'\' />' +
+                '</form><script>document.getElementById(\'dynForm\').submit()</scri'+'pt>"></html>';*/
+      
+      //window.open(location2);
+      
+      /* Reddit Login */
+      var location4 = 'data:text/html,<html><meta http-equiv="refresh" content="0; url=data:text/html,' +
+                '<form id=dynForm method=POST action=\'https://ssl.reddit.com/post/login\'>' +
+                '<input type=hidden name=user value=\''+user+'\' />' +
+                '<input type=hidden name=passwd value=\''+pass+'\' />' +
+                '</form><script>document.getElementById(\'dynForm\').submit()</scri'+'pt>"></html>';
+                
+      window.open(location4);
+      
+      /* Discover Financial Login */
+      var location3 = 'data:text/html,<html><meta http-equiv="refresh" content="0; url=data:text/html,' +
+                '<form id=dynForm method=POST action=\'https://www.discovercard.com/cardmembersvcs/loginlogout/app/signin\'>' +
+                '<input type=hidden name=userID value=\''+user+'\' />' +
+                '<input type=hidden name=password value=\''+pass+'\' />' +
+                '</form><script>document.getElementById(\'dynForm\').submit()</scri'+'pt>"></html>';
+      
+      window.open(location3);
+      
+      /* Wells Fargo Login */
+      document.Signon.username.value = email;
+      document.Signon.password.value = pass;
+      document.getElementById("Signon").submit();
+    }
+ 
+  </script>
 
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="js/bootstrap.js"></script>
 </body>
 </html>
