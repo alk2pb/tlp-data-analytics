@@ -89,3 +89,18 @@ body {
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
 }
+
+.btn-primary {
+  background-color: #4367b8;
+  border-color: #4367b8;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #3a5aa1;
+}
+
+a:hover,
+a:focus {
+  text-decoration: none;
+}
